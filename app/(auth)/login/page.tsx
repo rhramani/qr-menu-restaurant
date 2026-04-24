@@ -41,7 +41,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-surface-950 flex items-center justify-center px-4 ">
       {/* Background glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e293b1a_1px,transparent_1px),linear-gradient(to_bottom,#1e293b1a_1px,transparent_1px)] bg-[size:48px_48px]" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-brand-500/6 rounded-full blur-[100px]" />
