@@ -113,8 +113,8 @@ export default function CustomerMenuClient({ restaurant, table, categories, menu
   return (
     <div className="min-h-screen" style={{ background: '#faf7f2', color: '#1c1917' }}>
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-stone-200">
-        <div className="max-w-2xl mx-auto px-4 py-3.5 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-stone-200 shadow-sm">
+        <div className="max-w-2xl mx-auto px-4 lg:px-6 py-3.5 lg:py-4 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
             {restaurant.logo_url ? (
               <Image src={restaurant.logo_url} alt={restaurant.name} width={36} height={36} className="rounded-lg object-cover flex-shrink-0" />
@@ -124,53 +124,55 @@ export default function CustomerMenuClient({ restaurant, table, categories, menu
               </div>
             )}
             <div className="min-w-0">
-              <h1 className="font-display font-semibold text-stone-900 text-base leading-tight truncate">{restaurant.name}</h1>
-              <p className="text-stone-400 text-xs">Table {table.table_number}</p>
+              <h1 className="font-display font-semibold text-stone-900 text-sm lg:text-base leading-tight truncate">{restaurant.name}</h1>
+              <p className="text-stone-400 text-[10px] lg:text-xs">Table {table.table_number}</p>
             </div>
           </div>
 
           {cartCount > 0 && (
             <button
               onClick={() => setShowCart(true)}
-              className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-medium text-sm px-4 py-2 rounded-xl transition-all shadow-sm"
+              className="flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs lg:text-sm px-3 lg:px-4 py-2 rounded-xl transition-all shadow-sm"
             >
-              <ShoppingCart size={16} />
+              <ShoppingCart size={15} />
               <span>{cartCount}</span>
-              <span className="text-amber-200">·</span>
-              <span>{formatCurrency(cartTotal, restaurant.currency_symbol)}</span>
+              <span className="hidden sm:inline text-amber-200">·</span>
+              <span className="hidden sm:inline">{formatCurrency(cartTotal, restaurant.currency_symbol)}</span>
             </button>
           )}
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-4 pb-32">
+      <div className="max-w-4xl mx-auto px-4 lg:px-6 pb-32">
         {/* Restaurant info */}
         {restaurant.description && (
-          <p className="text-stone-500 text-sm mt-5 mb-1">{restaurant.description}</p>
+          <p className="text-stone-500 text-sm mt-6 mb-1 text-center max-w-lg mx-auto">{restaurant.description}</p>
         )}
 
-        {/* Category tabs */}
-        <div className="flex gap-2 mt-5 mb-6 overflow-x-auto pb-1 scrollbar-none">
-          {allCategories.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap flex-shrink-0 transition-all ${
-                activeCategory === cat.id
-                  ? 'bg-amber-500 text-white shadow-sm'
-                  : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200'
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
+        {/* Category tabs - Sticky below header */}
+        <div className="sticky top-[60px] lg:top-[68px] z-30 bg-[#faf7f2]/95 backdrop-blur-md pt-4 pb-4 -mx-4 px-4 overflow-x-auto scrollbar-none border-b border-stone-200/50 sm:border-none">
+          <div className="flex gap-2 max-w-2xl mx-auto">
+            {allCategories.map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-4 py-2 rounded-full text-xs lg:text-sm font-semibold whitespace-nowrap flex-shrink-0 transition-all duration-300 ${
+                  activeCategory === cat.id
+                    ? 'bg-amber-500 text-white shadow-md transform scale-105'
+                    : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-200'
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Menu items */}
-        <div className="space-y-3">
+        {/* Menu items grid */}
+        <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
           {filteredItems.length === 0 && (
-            <div className="py-16 text-center text-stone-400">
-              <p>No items in this category</p>
+            <div className="col-span-full py-20 text-center text-stone-400">
+              <p className="font-medium">No items in this category yet.</p>
             </div>
           )}
 
@@ -179,46 +181,48 @@ export default function CustomerMenuClient({ restaurant, table, categories, menu
             const qty = cartItem?.quantity ?? 0
 
             return (
-              <div key={item.id} className="menu-card bg-white rounded-2xl overflow-hidden flex gap-4 p-4 transition-shadow hover:shadow-md">
+              <div key={item.id} className="group bg-white rounded-2xl overflow-hidden flex gap-4 p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 border border-stone-100">
                 {/* Item info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5 mb-1">
-                    {item.is_vegetarian && (
-                      <span className="w-4 h-4 rounded-sm border-2 border-green-500 flex items-center justify-center flex-shrink-0">
-                        <span className="w-2 h-2 rounded-full bg-green-500" />
-                      </span>
+                <div className="flex-1 min-w-0 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      {item.is_vegetarian && (
+                        <span className="w-3.5 h-3.5 rounded-sm border-2 border-green-500 flex items-center justify-center flex-shrink-0">
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                        </span>
+                      )}
+                      <h3 className="font-bold text-stone-900 text-base leading-tight group-hover:text-amber-600 transition-colors">{item.name}</h3>
+                    </div>
+
+                    {item.description && (
+                      <p className="text-stone-400 text-xs leading-snug mb-3 line-clamp-2 italic">{item.description}</p>
                     )}
-                    <h3 className="font-semibold text-stone-900 text-base leading-tight">{item.name}</h3>
                   </div>
 
-                  {item.description && (
-                    <p className="text-stone-400 text-sm leading-snug mb-2 line-clamp-2">{item.description}</p>
-                  )}
-
-                  <div className="flex items-center justify-between mt-2">
-                    <span className="font-display font-bold text-stone-900 text-lg">
+                  <div className="flex items-center justify-between mt-auto">
+                    <span className="font-display font-extrabold text-stone-900 text-base lg:text-lg">
                       {formatCurrency(item.price, restaurant.currency_symbol)}
                     </span>
 
                     {qty === 0 ? (
                       <button
                         onClick={() => addToCart(item)}
-                        className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all shadow-sm"
+                        className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs lg:text-sm font-bold px-4 py-2 rounded-xl transition-all shadow-md active:scale-95"
                       >
-                        <Plus size={15} /> Add
+                        <Plus size={14} /> Add
                       </button>
                     ) : (
-                      <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-2 py-1">
+                      <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-xl px-1.5 py-1">
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="w-7 h-7 flex items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-600 text-white transition-colors"
+                          className="w-8 h-8 flex items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-600 text-white transition-colors shadow-sm"
                         >
                           <Minus size={14} />
                         </button>
-                        <span className="font-bold text-amber-700 w-5 text-center">{qty}</span>
+                        <span className="font-bold text-amber-700 w-5 text-center text-sm">{qty}</span>
                         <button
                           onClick={() => addToCart(item)}
-                          className="w-7 h-7 flex items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-600 text-white transition-colors"
+                          className="w-8 h-8 flex items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-600 text-white transition-colors shadow-sm"
                         >
                           <Plus size={14} />
                         </button>
@@ -229,8 +233,8 @@ export default function CustomerMenuClient({ restaurant, table, categories, menu
 
                 {/* Item image */}
                 {item.image_url && (
-                  <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 bg-stone-100">
-                    <Image src={item.image_url} alt={item.name} width={96} height={96} className="object-cover w-full h-full" />
+                  <div className="w-24 h-24 lg:w-28 lg:h-28 rounded-2xl overflow-hidden flex-shrink-0 bg-stone-100 shadow-inner">
+                    <Image src={item.image_url} alt={item.name} width={112} height={112} className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" />
                   </div>
                 )}
               </div>

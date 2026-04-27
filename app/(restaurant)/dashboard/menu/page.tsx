@@ -127,25 +127,26 @@ export default function MenuPage() {
         title="Menu"
         subtitle={`${items.length} items across ${categories.length} categories`}
         actions={
-          <div className="flex gap-2">
-            <Button variant="secondary" size="sm" icon={<Plus size={14} />} onClick={() => setShowCatModal(true)}>
-              Category
+          <div className="flex items-center gap-2">
+            <Button variant="secondary" size="sm" icon={<Plus size={14} />} onClick={() => setShowCatModal(true)} className="whitespace-nowrap">
+              <span className="hidden sm:inline">Category</span>
             </Button>
-            <Button size="sm" icon={<Plus size={14} />} onClick={openAddItem}>
-              Add Item
+            <Button size="sm" icon={<Plus size={14} />} onClick={openAddItem} className="whitespace-nowrap">
+              <span className="hidden sm:inline">Add Item</span>
+              <span className="sm:hidden text-xs">Add</span>
             </Button>
           </div>
         }
       />
 
-      <main className="flex-1 p-7 animate-fade-in">
+      <main className="flex-1 p-4 lg:p-7 animate-fade-in overflow-x-hidden">
         {/* Tabs */}
         <div className="flex gap-1 p-1 bg-surface-950 border border-slate-800 rounded-lg w-fit mb-6">
           {(['items', 'categories'] as Tab[]).map(t => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-all capitalize ${
+              className={`px-4 py-1.5 text-xs lg:text-sm font-medium rounded-md transition-all capitalize ${
                 tab === t ? 'bg-surface-800 text-slate-100 shadow-sm' : 'text-slate-500 hover:text-slate-300'
               }`}
             >
@@ -157,33 +158,34 @@ export default function MenuPage() {
         {tab === 'items' && (
           <>
             {/* Search */}
-            <div className="relative max-w-sm mb-5">
+            <div className="relative max-w-sm mb-6">
               <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
-              <input className="input-base pl-9 pr-8" placeholder="Search menu items..." value={search} onChange={e => setSearch(e.target.value)} />
+              <input className="input-base pl-10 pr-10" placeholder="Search menu items..." value={search} onChange={e => setSearch(e.target.value)} />
               {search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"><X size={14} /></button>}
             </div>
 
-            <div className="bg-surface-900 border border-slate-800 rounded-xl overflow-hidden">
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-surface-900 border border-slate-800 rounded-xl overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-slate-800">
-                    <th className="text-left px-6 py-3.5 text-slate-500 font-medium text-xs uppercase tracking-wider">Item</th>
-                    <th className="text-left px-6 py-3.5 text-slate-500 font-medium text-xs uppercase tracking-wider">Category</th>
-                    <th className="text-left px-6 py-3.5 text-slate-500 font-medium text-xs uppercase tracking-wider">Price</th>
-                    <th className="text-left px-6 py-3.5 text-slate-500 font-medium text-xs uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3.5 text-right text-slate-500 font-medium text-xs uppercase tracking-wider">Actions</th>
+                    <th className="text-left px-6 py-4 text-slate-500 font-medium text-xs uppercase tracking-wider">Item</th>
+                    <th className="text-left px-6 py-4 text-slate-500 font-medium text-xs uppercase tracking-wider">Category</th>
+                    <th className="text-left px-6 py-4 text-slate-500 font-medium text-xs uppercase tracking-wider">Price</th>
+                    <th className="text-left px-6 py-4 text-slate-500 font-medium text-xs uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-4 text-right text-slate-500 font-medium text-xs uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">
                   {loading ? (
                     Array.from({ length: 5 }).map((_, i) => (
-                      <tr key={i}><td colSpan={5} className="px-6 py-4"><div className="h-5 bg-slate-800 rounded animate-pulse" /></td></tr>
+                      <tr key={i}><td colSpan={5} className="px-6 py-5"><div className="h-5 bg-slate-800/50 rounded animate-pulse" /></td></tr>
                     ))
                   ) : filteredItems.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="px-6 py-14 text-center">
+                      <td colSpan={5} className="px-6 py-20 text-center">
                         <div className="text-slate-700">
-                          <p className="font-medium text-slate-500">No menu items yet</p>
+                          <p className="font-medium text-slate-500 text-base">No menu items yet</p>
                           <p className="text-sm mt-1">Add your first item to get started</p>
                         </div>
                       </td>
@@ -193,8 +195,8 @@ export default function MenuPage() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           {item.is_vegetarian && <Leaf size={14} className="text-green-400 flex-shrink-0" />}
-                          <div>
-                            <p className="text-slate-100 font-medium">{item.name}</p>
+                          <div className="min-w-0">
+                            <p className="text-slate-100 font-medium truncate">{item.name}</p>
                             {item.description && <p className="text-slate-600 text-xs mt-0.5 max-w-[240px] truncate">{item.description}</p>}
                           </div>
                         </div>
@@ -208,11 +210,11 @@ export default function MenuPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center justify-end gap-1.5">
-                          <button onClick={() => openEditItem(item)} className="p-1.5 text-slate-500 hover:text-brand-400 hover:bg-brand-500/10 rounded-lg transition-colors">
-                            <Pencil size={14} />
+                          <button onClick={() => openEditItem(item)} className="p-2 text-slate-500 hover:text-brand-400 hover:bg-brand-500/10 rounded-lg transition-colors">
+                            <Pencil size={15} />
                           </button>
-                          <button onClick={() => deleteItem(item.id)} className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
-                            <Trash2 size={14} />
+                          <button onClick={() => deleteItem(item.id)} className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors">
+                            <Trash2 size={15} />
                           </button>
                         </div>
                       </td>
@@ -221,22 +223,67 @@ export default function MenuPage() {
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-3">
+              {loading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="h-28 bg-surface-900 border border-slate-800 rounded-xl animate-pulse" />
+                ))
+              ) : filteredItems.length === 0 ? (
+                <div className="py-20 text-center bg-surface-900 border border-slate-800 rounded-xl">
+                  <p className="text-slate-500 font-medium">No items found</p>
+                </div>
+              ) : filteredItems.map(item => (
+                <div key={item.id} className="bg-surface-900 border border-slate-800 rounded-xl p-4 space-y-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex gap-2.5">
+                      {item.is_vegetarian && <Leaf size={14} className="text-green-400 mt-0.5 flex-shrink-0" />}
+                      <div>
+                        <h4 className="text-slate-100 font-medium leading-tight">{item.name}</h4>
+                        <p className="text-slate-500 text-[10px] mt-1">{getCategoryName(item.category_id)}</p>
+                      </div>
+                    </div>
+                    <span className="text-slate-100 font-bold font-mono text-sm">{formatCurrency(item.price)}</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between pt-1">
+                    <Badge variant={item.is_available ? 'success' : 'default'}>
+                      {item.is_available ? 'Available' : 'Unavailable'}
+                    </Badge>
+                    <div className="flex items-center gap-1">
+                      <button onClick={() => openEditItem(item)} className="w-9 h-9 flex items-center justify-center text-slate-400 bg-slate-800 rounded-lg">
+                        <Pencil size={14} />
+                      </button>
+                      <button onClick={() => deleteItem(item.id)} className="w-9 h-9 flex items-center justify-center text-red-400 bg-red-400/10 rounded-lg">
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </>
         )}
 
         {tab === 'categories' && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {categories.map(cat => (
-              <div key={cat.id} className="bg-surface-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition-colors">
+              <div key={cat.id} className="bg-surface-900 border border-slate-800 hover:border-slate-700 rounded-xl p-5 transition-colors group">
                 <div className="flex items-start justify-between mb-3">
-                  <h3 className="font-semibold text-slate-100">{cat.name}</h3>
+                  <h3 className="font-semibold text-slate-100 group-hover:text-brand-400 transition-colors">{cat.name}</h3>
                   <Badge variant={cat.is_active ? 'success' : 'default'}>{cat.is_active ? 'Active' : 'Hidden'}</Badge>
                 </div>
-                <p className="text-slate-500 text-sm">{items.filter(i => i.category_id === cat.id).length} items</p>
+                <div className="flex items-center justify-between text-[10px] uppercase tracking-wider font-semibold text-slate-600">
+                  <span>{items.filter(i => i.category_id === cat.id).length} items</span>
+                  <button className="text-slate-700 hover:text-slate-400 transition-colors">Edit →</button>
+                </div>
               </div>
             ))}
             {categories.length === 0 && (
-              <div className="col-span-3 py-14 text-center text-slate-600">No categories yet. Add one to organize your menu.</div>
+              <div className="col-span-full py-20 text-center text-slate-600 bg-surface-950/30 border border-dashed border-slate-800 rounded-2xl">
+                No categories yet. Add one to organize your menu.
+              </div>
             )}
           </div>
         )}
@@ -244,45 +291,58 @@ export default function MenuPage() {
 
       {/* Add/Edit Item Modal */}
       {showItemModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-          <div className="bg-surface-900 border border-slate-800 rounded-2xl p-7 w-full max-w-md shadow-premium animate-slide-up">
-            <h2 className="font-display text-xl font-semibold text-slate-100 mb-6">{editItem ? 'Edit Item' : 'Add Menu Item'}</h2>
-            <div className="space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md px-4 py-6 overflow-y-auto">
+          <div className="bg-surface-900 border border-slate-800 rounded-2xl p-6 lg:p-8 w-full max-w-md shadow-2xl animate-scale-up">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-display text-xl font-bold text-slate-100">{editItem ? 'Edit Menu Item' : 'New Menu Item'}</h2>
+              <button onClick={() => setShowItemModal(false)} className="text-slate-500 hover:text-slate-200">
+                <X size={20} />
+              </button>
+            </div>
+            
+            <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">Item Name *</label>
-                <input className="input-base" placeholder="Paneer Tikka" value={itemForm.name} onChange={e => setItemForm(p => ({ ...p, name: e.target.value }))} />
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Item Name *</label>
+                <input className="input-base text-sm" placeholder="e.g. Classic Margherita Pizza" value={itemForm.name} onChange={e => setItemForm(p => ({ ...p, name: e.target.value }))} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
-                <textarea className="input-base resize-none h-20" placeholder="Marinated cottage cheese..." value={itemForm.description} onChange={e => setItemForm(p => ({ ...p, description: e.target.value }))} />
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Description</label>
+                <textarea className="input-base text-sm resize-none h-24" placeholder="Fresh basil, mozzarella, and tomatoes..." value={itemForm.description} onChange={e => setItemForm(p => ({ ...p, description: e.target.value }))} />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1.5">Price (₹) *</label>
-                  <input type="number" className="input-base" placeholder="299" value={itemForm.price} onChange={e => setItemForm(p => ({ ...p, price: e.target.value }))} />
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Price (₹) *</label>
+                  <input type="number" className="input-base text-sm font-mono" placeholder="299" value={itemForm.price} onChange={e => setItemForm(p => ({ ...p, price: e.target.value }))} />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1.5">Category</label>
-                  <select className="input-base" value={itemForm.category_id} onChange={e => setItemForm(p => ({ ...p, category_id: e.target.value }))}>
+                  <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Category</label>
+                  <select className="input-base text-sm" value={itemForm.category_id} onChange={e => setItemForm(p => ({ ...p, category_id: e.target.value }))}>
                     <option value="">Uncategorized</option>
                     {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                 </div>
               </div>
-              <div className="flex gap-5">
-                <label className="flex items-center gap-2.5 cursor-pointer">
-                  <input type="checkbox" className="w-4 h-4 rounded accent-brand-500" checked={itemForm.is_vegetarian} onChange={e => setItemForm(p => ({ ...p, is_vegetarian: e.target.checked }))} />
-                  <span className="text-sm text-slate-400 flex items-center gap-1.5"><Leaf size={13} className="text-green-400" /> Vegetarian</span>
+              <div className="flex flex-wrap gap-x-6 gap-y-3 pt-2">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${itemForm.is_vegetarian ? 'bg-green-500/20 border-green-500' : 'border-slate-700 group-hover:border-slate-500'}`}>
+                    {itemForm.is_vegetarian && <div className="w-2 h-2 rounded-full bg-green-500" />}
+                  </div>
+                  <input type="checkbox" className="hidden" checked={itemForm.is_vegetarian} onChange={e => setItemForm(p => ({ ...p, is_vegetarian: e.target.checked }))} />
+                  <span className="text-sm text-slate-400 group-hover:text-slate-200 transition-colors">Vegetarian</span>
                 </label>
-                <label className="flex items-center gap-2.5 cursor-pointer">
-                  <input type="checkbox" className="w-4 h-4 rounded accent-brand-500" checked={itemForm.is_available} onChange={e => setItemForm(p => ({ ...p, is_available: e.target.checked }))} />
-                  <span className="text-sm text-slate-400">Available</span>
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${itemForm.is_available ? 'bg-brand-500/20 border-brand-500' : 'border-slate-700 group-hover:border-slate-500'}`}>
+                    {itemForm.is_available && <div className="w-2 h-2 rounded-full bg-brand-500" />}
+                  </div>
+                  <input type="checkbox" className="hidden" checked={itemForm.is_available} onChange={e => setItemForm(p => ({ ...p, is_available: e.target.checked }))} />
+                  <span className="text-sm text-slate-400 group-hover:text-slate-200 transition-colors">Available for Order</span>
                 </label>
               </div>
             </div>
-            <div className="flex gap-3 mt-7">
-              <Button variant="secondary" className="flex-1" onClick={() => setShowItemModal(false)}>Cancel</Button>
-              <Button className="flex-1" loading={saving} onClick={saveItem}>{editItem ? 'Save Changes' : 'Add Item'}</Button>
+            
+            <div className="flex gap-3 mt-10">
+              <Button variant="secondary" className="flex-1" onClick={() => setShowItemModal(false)}>Discard</Button>
+              <Button className="flex-1" loading={saving} onClick={saveItem}>{editItem ? 'Save Changes' : 'Create Item'}</Button>
             </div>
           </div>
         </div>
@@ -290,17 +350,23 @@ export default function MenuPage() {
 
       {/* Add Category Modal */}
       {showCatModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-          <div className="bg-surface-900 border border-slate-800 rounded-2xl p-7 w-full max-w-sm shadow-premium animate-slide-up">
-            <h2 className="font-display text-xl font-semibold text-slate-100 mb-5">New Category</h2>
-            <input className="input-base mb-5" placeholder="e.g. Starters, Mains, Desserts" value={catName} onChange={e => setCatName(e.target.value)} />
-            <div className="flex gap-3">
-              <Button variant="secondary" className="flex-1" onClick={() => setShowCatModal(false)}>Cancel</Button>
-              <Button className="flex-1" loading={saving} onClick={saveCategory}>Create</Button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md px-4">
+          <div className="bg-surface-900 border border-slate-800 rounded-2xl p-6 lg:p-8 w-full max-w-sm shadow-2xl animate-scale-up">
+            <h2 className="font-display text-xl font-bold text-slate-100 mb-6">New Category</h2>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Category Name</label>
+                <input className="input-base text-sm" placeholder="e.g. Desserts, Starters..." value={catName} onChange={e => setCatName(e.target.value)} autoFocus />
+              </div>
+              <div className="flex gap-3">
+                <Button variant="secondary" className="flex-1" onClick={() => setShowCatModal(false)}>Cancel</Button>
+                <Button className="flex-1" loading={saving} onClick={saveCategory}>Create</Button>
+              </div>
             </div>
           </div>
         </div>
       )}
+
     </>
   )
 }

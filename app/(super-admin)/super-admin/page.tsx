@@ -41,7 +41,7 @@ export default async function SuperAdminDashboard() {
         subtitle="Monitor all restaurants and subscriptions"
       />
 
-      <main className="flex-1 p-7 space-y-7 animate-fade-in">
+      <main className="flex-1 p-4 lg:p-7 space-y-7 animate-fade-in overflow-x-hidden">
         {/* Stats grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard

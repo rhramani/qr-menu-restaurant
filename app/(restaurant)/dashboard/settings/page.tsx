@@ -69,23 +69,34 @@ export default function SettingsPage() {
   return (
     <>
       <Header title="Settings" subtitle="Manage your restaurant profile" />
-      <main className="flex-1 p-7 max-w-2xl animate-fade-in">
-        <div className="bg-surface-900 border border-slate-800 rounded-xl p-7 space-y-5">
-          <h2 className="font-semibold text-slate-100 text-lg border-b border-slate-800 pb-4 mb-2">Restaurant Profile</h2>
-          {field('Restaurant Name', 'name', 'text', 'The Grand Kitchen')}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Description</label>
-            <textarea className="input-base resize-none h-24" placeholder="A brief description..." value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} />
+      <main className="flex-1 p-4 lg:p-7 max-w-3xl animate-fade-in overflow-x-hidden">
+        <div className="bg-surface-900 border border-slate-800 rounded-2xl p-5 lg:p-8 space-y-6 shadow-xl shadow-black/20">
+          <div className="border-b border-slate-800 pb-5 mb-2">
+            <h2 className="font-display text-xl font-bold text-slate-100">Restaurant Profile</h2>
+            <p className="text-slate-500 text-xs mt-1">This information will be displayed on your digital menu.</p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            {field('City', 'city', 'text', 'Mumbai')}
-            {field('Phone', 'phone', 'tel', '+91 98765 43210')}
-          </div>
-          {field('Contact Email', 'email', 'email', 'contact@restaurant.com')}
-          {field('Address', 'address', 'text', '123 Main Street, ...')}
+          
+          <div className="space-y-5">
+            {field('Restaurant Name', 'name', 'text', 'e.g. The Grand Kitchen')}
+            
+            <div>
+              <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Description</label>
+              <textarea className="input-base text-sm resize-none h-28" placeholder="Tell your customers about your restaurant..." value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} />
+            </div>
 
-          <div className="pt-2">
-            <Button icon={<Save size={16} />} loading={saving} onClick={save}>Save Changes</Button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {field('City', 'city', 'text', 'e.g. Mumbai')}
+              {field('Phone Number', 'phone', 'tel', '+91 98765 43210')}
+            </div>
+
+            {field('Public Contact Email', 'email', 'email', 'contact@restaurant.com')}
+            {field('Full Address', 'address', 'text', 'e.g. 123 Main Street, Area, City')}
+
+            <div className="pt-4">
+              <Button icon={<Save size={16} />} loading={saving} onClick={save} className="w-full sm:w-auto px-10 py-3.5">
+                Save Changes
+              </Button>
+            </div>
           </div>
         </div>
       </main>

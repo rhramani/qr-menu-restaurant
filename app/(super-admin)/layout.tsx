@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import Sidebar from '@/components/layout/Sidebar'
+import DashboardShell from '@/components/layout/DashboardShell'
 
 export default async function SuperAdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = createClient()
@@ -17,11 +17,8 @@ export default async function SuperAdminLayout({ children }: { children: React.R
   if (profile?.role !== 'super_admin') redirect('/dashboard')
 
   return (
-    <div className="flex min-h-screen">
-      <Sidebar role="super_admin" />
-      <div className="flex-1 flex flex-col min-w-0">
-        {children}
-      </div>
-    </div>
+    <DashboardShell role="super_admin">
+      {children}
+    </DashboardShell>
   )
 }
