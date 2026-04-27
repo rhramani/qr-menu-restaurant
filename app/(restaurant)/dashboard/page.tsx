@@ -126,7 +126,7 @@ export default async function RestaurantDashboard() {
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">
                   {todayOrders.map(order => {
-                    const table = order.restaurant_tables as { table_number: string } | null
+                    const table = order.restaurant_tables as unknown as { table_number: string } | null
                     return (
                       <tr key={order.id} className="table-row-hover">
                         <td className="px-6 py-4">

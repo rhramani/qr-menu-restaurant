@@ -92,7 +92,14 @@ export interface Database {
           is_active: boolean
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['categories']['Row'], 'id' | 'created_at'>
+        Insert: {
+          restaurant_id: string
+          name: string
+          description?: string | null
+          image_url?: string | null
+          sort_order?: number
+          is_active?: boolean
+        }
         Update: Partial<Database['public']['Tables']['categories']['Insert']>
       }
       menu_items: {
@@ -116,7 +123,23 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['menu_items']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Insert: {
+          restaurant_id: string
+          name: string
+          price: number
+          category_id?: string | null
+          description?: string | null
+          image_url?: string | null
+          is_vegetarian?: boolean
+          is_vegan?: boolean
+          is_gluten_free?: boolean
+          is_featured?: boolean
+          is_available?: boolean
+          sort_order?: number
+          prep_time_minutes?: number
+          calories?: number | null
+          tags?: string[]
+        }
         Update: Partial<Database['public']['Tables']['menu_items']['Insert']>
       }
       restaurant_tables: {
@@ -129,7 +152,13 @@ export interface Database {
           is_active: boolean
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['restaurant_tables']['Row'], 'id' | 'created_at'>
+        Insert: {
+          restaurant_id: string
+          table_number: string
+          capacity?: number
+          floor?: string | null
+          is_active?: boolean
+        }
         Update: Partial<Database['public']['Tables']['restaurant_tables']['Insert']>
       }
       qr_codes: {
@@ -163,7 +192,20 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['orders']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Insert: {
+          restaurant_id: string
+          order_number: string
+          subtotal: number
+          tax: number
+          total: number
+          table_id?: string | null
+          qr_code_id?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          status?: OrderStatus
+          notes?: string | null
+          served_at?: string | null
+        }
         Update: Partial<Database['public']['Tables']['orders']['Insert']>
       }
       order_items: {
@@ -178,7 +220,15 @@ export interface Database {
           special_instructions: string | null
           created_at: string
         }
-        Insert: Omit<Database['public']['Tables']['order_items']['Row'], 'id' | 'created_at'>
+        Insert: {
+          order_id: string
+          name: string
+          price: number
+          quantity: number
+          subtotal: number
+          menu_item_id?: string | null
+          special_instructions?: string | null
+        }
         Update: Partial<Database['public']['Tables']['order_items']['Insert']>
       }
     }

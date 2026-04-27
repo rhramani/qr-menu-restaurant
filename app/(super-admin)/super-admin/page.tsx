@@ -23,7 +23,7 @@ export default async function SuperAdminDashboard() {
   ])
 
   const mrr = subscriptions?.reduce((sum, s) => {
-    const plan = s.plan as { name: string; price_monthly: number } | null
+    const plan = s.plan as unknown as { name: string; price_monthly: number } | null
     return sum + (plan?.price_monthly ?? 0)
   }, 0) ?? 0
 
