@@ -79,8 +79,8 @@ export default function Sidebar({ role, restaurantName, pendingOrders, isOpen, o
             className="flex items-center gap-2.5"
             onClick={onClose}
           >
-            <div className="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center flex-shrink-0">
-              <QrCode size={16} className="text-slate-900" />
+            <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0">
+              <img src="/logo.png" alt="QRBite" className="w-full h-full object-cover" />
             </div>
             <div className="min-w-0">
               <span className="font-display font-semibold text-slate-100 text-base block">QRBite</span>

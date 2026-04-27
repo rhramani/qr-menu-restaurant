@@ -50,8 +50,8 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2.5 justify-center mb-6">
-            <div className="w-10 h-10 rounded-xl bg-brand-500 flex items-center justify-center shadow-glow-amber">
-              <QrCode size={20} className="text-slate-900" />
+            <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 shadow-glow-amber">
+              <img src="/logo.png" alt="QRBite" className="w-full h-full object-cover" />
             </div>
             <span className="font-display font-semibold text-xl text-slate-100">QRBite</span>
           </Link>

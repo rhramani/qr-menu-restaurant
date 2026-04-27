@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s | QRBite',
   },
   description: 'QR-based digital menu and ordering system for modern restaurants',
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: '/favicon.png' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
